@@ -131,6 +131,9 @@ LOGIN_URL = '/user/login_view/'
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
 
 # In Production
 # SECURE_SSL_REDIRECT = True
