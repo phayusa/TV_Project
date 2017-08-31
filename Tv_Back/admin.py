@@ -9,4 +9,5 @@ from models import *
 admin.site.register(Stream)
 admin.site.register(Category)
 admin.site.register(Client)
+admin.site.register(Type)
 

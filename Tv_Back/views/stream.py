@@ -7,12 +7,14 @@ from Tv_Back.serializers import StreamSerializer
 from Tv_Back.models import Stream
 from Tv_Back.permissions import ClientPermission
 from rest_framework.test import force_authenticate
+from django_filters.rest_framework import DjangoFilterBackend
+import django_filters
 
 
 class StreamBase(generics.GenericAPIView):
     serializer_class = StreamSerializer
     queryset = Stream.objects.all()
-    permission_classes = (ClientPermission, )
+    # permission_classes = (ClientPermission, )
 
     def dispatch(self, request, *args, **kwargs):
         force_authenticate(request)
@@ -20,7 +22,16 @@ class StreamBase(generics.GenericAPIView):
 
 
 class StreamList(StreamBase, generics.ListAPIView):
-    pass
+    # Filter by overriding because of encoding error
+    def get_queryset(self):
+        queryset = Stream.objects.all()
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = queryset.filter(category=category)
+        info = self.request.query_params.get('info', None)
+        if info is not None:
+            queryset = queryset.filter(extra_info=info)
+        return queryset
 
 
 class StreamCreate(StreamBase, generics.CreateAPIView):
