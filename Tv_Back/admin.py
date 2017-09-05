@@ -10,4 +10,5 @@ admin.site.register(Stream)
 admin.site.register(Category)
 admin.site.register(Client)
 admin.site.register(Type)
+admin.site.register(Tag)
 

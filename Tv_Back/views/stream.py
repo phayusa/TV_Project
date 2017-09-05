@@ -2,13 +2,10 @@
 from __future__ import unicode_literals
 
 from rest_framework import generics
-
-from Tv_Back.serializers import StreamSerializer
-from Tv_Back.models import Stream
-from Tv_Back.permissions import ClientPermission
 from rest_framework.test import force_authenticate
-from django_filters.rest_framework import DjangoFilterBackend
-import django_filters
+
+from Tv_Back.models import Stream
+from Tv_Back.serializers import StreamSerializer
 
 
 class StreamBase(generics.GenericAPIView):
