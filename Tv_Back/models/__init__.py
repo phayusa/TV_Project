@@ -1,5 +1,6 @@
-from category import Category
-from stream import Stream
+from category import CategoryChannel, CategoryMovie, CategorySerie, Category
+from stream import Stream, Channel, Episode, Movie
+from serie import Serie
 from client import Client
-from type import Type
 from tag import Tag
+from season import Season

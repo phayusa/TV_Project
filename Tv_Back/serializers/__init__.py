@@ -1,4 +1,4 @@
-from category import CategorySerializer
-from stream import StreamSerializer
-from type import TypeSerializer
+from category import CategorySerializer, CategoryChannelSerializer
+from stream import ChannelSerializer, MovieSerializer, EpisodeSerializer
+from stream import SeasonSerializer, SerieSerializer
 from tag import TagSerializer

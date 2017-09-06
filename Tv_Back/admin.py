@@ -6,9 +6,12 @@ from models import *
 
 # Register your models here.
 
-admin.site.register(Stream)
-admin.site.register(Category)
-admin.site.register(Client)
-admin.site.register(Type)
+admin.site.register(CategoryChannel)
 admin.site.register(Tag)
+admin.site.register(Channel)
+admin.site.register(Movie)
+admin.site.register(CategoryMovie)
+admin.site.register(Serie)
+admin.site.register(Season)
+admin.site.register(Episode)
 

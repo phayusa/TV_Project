@@ -32,7 +32,9 @@ while True:
         break
 
     if "•●★" in comment:
-        categoryName = comment.split(",")[1].replace("•●★", "").replace("★●•", "").replace("-", "").strip()
+        categoryName = comment.split(",")[1].replace("•●★", "").replace("★●•", "").replace("-", "").replace("aison ",
+                                                                                                            "0") \
+            .replace("AISON ", "0").strip()
     else:
         if ".ts" in url:
             outputDirectory = channelsDirectory

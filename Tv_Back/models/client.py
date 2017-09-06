@@ -11,5 +11,7 @@ class Client(models.Model):
     expiration_date = models.DateTimeField(blank=True, default=None)
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False)
 
-    def __str__(self):
-        return self.user.username
+    def __unicode__(self):
+        return u'%s' % self.user.username
+        # def __str__(self):
+        # return self.user.username

@@ -4,13 +4,11 @@ from __future__ import unicode_literals
 from rest_framework import generics
 from rest_framework.test import force_authenticate
 
-from Tv_Back.models import Stream
-from Tv_Back.serializers import StreamSerializer
+from Tv_Back.models import Channel, Movie, Serie
+from Tv_Back.serializers import ChannelSerializer, MovieSerializer, SerieSerializer
 
 
 class StreamBase(generics.GenericAPIView):
-    serializer_class = StreamSerializer
-    queryset = Stream.objects.all()
     # permission_classes = (ClientPermission, )
 
     def dispatch(self, request, *args, **kwargs):
@@ -18,22 +16,42 @@ class StreamBase(generics.GenericAPIView):
         return super(StreamBase, self).dispatch(request, *args, **kwargs)
 
 
-class StreamList(StreamBase, generics.ListAPIView):
+class ChannelList(StreamBase, generics.ListAPIView):
+    queryset = Channel.objects.all()
+    serializer_class = ChannelSerializer
+
     # Filter by overriding because of encoding error
     def get_queryset(self):
-        queryset = Stream.objects.all()
+        queryset = Channel.objects.all()
         category = self.request.query_params.get('category', None)
         if category is not None:
             queryset = queryset.filter(category=category)
-        info = self.request.query_params.get('info', None)
-        if info is not None:
-            queryset = queryset.filter(extra_info=info)
         return queryset
 
 
-class StreamCreate(StreamBase, generics.CreateAPIView):
-    pass
+class MovieList(StreamBase, generics.ListAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+    # Filter by overriding because of encoding error
+    def get_queryset(self):
+        queryset = Movie.objects.all()
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = queryset.filter(category=category)
+        return queryset
 
 
-class StreamDetail(StreamBase, generics.RetrieveUpdateDestroyAPIView):
-    pass
+class SerieList(StreamBase, generics.ListAPIView):
+    queryset = Serie.objects.all()
+    serializer_class = SerieSerializer
+
+    # Filter by overriding because of encoding error
+    def get_queryset(self):
+        queryset = Serie.objects.all()
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = queryset.filter(category=category)
+        return queryset
+
+
