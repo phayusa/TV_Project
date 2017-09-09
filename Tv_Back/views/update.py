@@ -79,4 +79,4 @@ def populate_db(request):
                                                              url=line.strip().encode("utf-8"))
                         episodes += 1
 
-    return http.HttpResponseRedirect('/TV/channels/')
+    return http.HttpResponseRedirect('/TV/update/infos/')

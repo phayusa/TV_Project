@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from rest_framework import generics
 
-from Tv_Back.serializers import CategorySerializer, CategoryChannelSerializer
+from Tv_Back.serializers import CategorySerializer, CategoryChannelSerializer, CategoryMovieSerializer, CategorySerieeSerializer
 from Tv_Back.models import CategoryChannel, CategoryMovie, CategorySerie
 from Tv_Back.permissions import ClientPermission
 from rest_framework.test import force_authenticate
@@ -32,10 +32,12 @@ class CategoryChannelList(CategoryBase, generics.ListAPIView):
 
 class CategoryMovieList(CategoryBase, generics.ListAPIView):
     queryset = CategoryMovie.objects.all()
+    serializer_class = CategoryMovieSerializer
 
 
 class CategorySerieList(CategoryBase, generics.ListAPIView):
     queryset = CategorySerie.objects.all()
+    serializer_class = CategorySerieeSerializer
 
 # class CategoryDetail(CategoryBase, generics.RetrieveUpdateDestroyAPIView):
     # pass

@@ -9,7 +9,9 @@ class Serie(models.Model):
     name = models.CharField(max_length=100)
     seasons = models.IntegerField(blank=True, null=True)
     episodes = models.IntegerField(blank=True, null=True)
-    category = models.ForeignKey(CategorySerie, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ManyToManyField(CategorySerie)
+    image_url = models.URLField(blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
         return u'%s' % self.name

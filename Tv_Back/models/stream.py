@@ -11,8 +11,8 @@ class Stream(models.Model):
     name = models.CharField(blank=False, max_length=200)
     url = models.CharField(blank=False, max_length=1000)
 
-    def __str__(self):
-        return self.name
+    def __unicode__(self):
+        return u"%s" % self.name
 
     class Meta:
         abstract = True
@@ -23,7 +23,8 @@ class Channel(Stream):
 
 
 class Movie(Stream):
-    category = models.ForeignKey(CategoryMovie, on_delete=models.CASCADE)
+    category = models.ForeignKey(CategoryMovie)
+    image_url = models.URLField(blank=True, null=True)
 
 
 class Episode(models.Model):

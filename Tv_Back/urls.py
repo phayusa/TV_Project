@@ -8,6 +8,7 @@ from views.category import CategoryChannelList, CategoryMovieList, CategorySerie
 from views.serie import SeasonList
 from views.tag import TagList
 from views.update import populate_db
+from views.update_infos import update_info
 from views.serie import EpisodeList
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'create/', ClientCreate.as_view()),
 
     url(r'update/all/', populate_db, name="update"),
+    url(r'update/infos/', update_info, name="infos"),
     url(r'validate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', activate,
         name='user-activation-link'),
 ]
