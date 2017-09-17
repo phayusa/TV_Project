@@ -11,7 +11,7 @@ from rest_framework.test import force_authenticate
 
 class CategoryBase(generics.GenericAPIView):
     serializer_class = CategorySerializer
-    # permission_classes = (ClientPermission, )
+    permission_classes = (ClientPermission, )
 
     def dispatch(self, request, *args, **kwargs):
         force_authenticate(request)

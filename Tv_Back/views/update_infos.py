@@ -12,7 +12,7 @@ from django import http
 
 def update_info(request):
     update_serie()
-    #update_movie()
+    # update_movie()
 
     return http.HttpResponseRedirect('/admin/')
 
@@ -34,17 +34,22 @@ def update_serie():
 
 
 def update_movie():
-    base_url_api = "http://www.omdbapi.com/?t="
+    # base_url_api = "https://tv-v2.api-fetch.website/movies/1?keywords="
+    base_url_api = "http://www.omdbapi.com/?apikey=BanMePls&t="
+    headers = {
+        'User-Agent': 'Mozilla/5.0'}
     for movie in Movie.objects.all():
-        name_serie = movie.name.encode('utf-8')
+        name_serie = movie.name.encode('utf-8').strip()
+        print name_serie
         url = base_url_api.encode('utf-8') + name_serie
-
-        json_received = urllib2.urlopen(url).read()
+        print url
+        req = urllib2.Request(url, None, headers)
+        open_url = urllib2.urlopen(req)
+        json_received = open_url.read()
         object_movie = json.loads(json_received)[0]
         movie.image_url = object_movie['Poster']
         movie.summary = object_movie['Plot']
-        for category in object_movie['Genre'].split(','):
-            find_category, _ = CategoryMovie.objects.get_or_create(name=category)
-            movie.category.add(find_category)
+        # for category in object_movie['genres']:
+        #     find_category, _ = CategoryMovie.objects.get_or_create(name=category)
+        #     movie.category.add(find_category)
         movie.save()
-

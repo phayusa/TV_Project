@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
+
 from django import http
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -13,35 +15,43 @@ from django.utils.http import urlsafe_base64_encode
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
+import json
 
 from Tv_Back.models import Client
 
 
 class ClientCreate(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
-        username = request.data.get('username', False)
-        password = request.data.get('password', False)
-        mail = request.data.get('mail', False)
+        # username = request.data.get('username', False)
+        # password = request.data.get('password', False)
+        # mail = request.data.get('mail', False)
+        #
+        # if not mail and not username and not password:
+        #     return Response("Username or Password or Mail not renseigned", status=status.HTTP_400_BAD_REQUEST)
+        # link_user = User.objects.filter(username=username, password=password, email=mail, is_active=False)
+        # if not link_user:
+        #     link_user = User.objects.create_user(username=username, password=password, email=mail, is_active=False)
+        #     link_user.save()
+        # token = default_token_generator.make_token(link_user)
+        # uid = urlsafe_base64_encode(force_bytes(link_user.pk))
 
-        if not mail and not username and not password:
-            return Response("Username or Password or Mail not renseigned", status=status.HTTP_400_BAD_REQUEST)
-        link_user = User.objects.filter(username=username, password=password, email=mail, is_active=False)
-        if not link_user:
-            link_user = User.objects.create_user(username=username, password=password, email=mail, is_active=False)
-            link_user.save()
-        token = default_token_generator.make_token(link_user)
-        uid = urlsafe_base64_encode(force_bytes(link_user.pk))
-
-        new_client = Client.objects.create(expiration_date=timezone.now(), user=link_user)
+        id = request.data.get('id', False)
+        if not id:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        # if Client.objects.get(device_id=id):
+        #     return Response(status=status.HTTP_403_FORBIDDEN)
+        new_client = Client.objects.create(expiration_date=timezone.now() + datetime.timedelta(days=+365),
+                                           device_id=id)
         new_client.save()
 
-        url = 'http://127.0.0.1:8000/TV/validate/' + uid + '/' + token
-        #try:
-        send_mail('Activate your account', 'Activate at : %s' % url, 'courstesttt@@gmail.com', [mail])
-        #except:
-         #   link_user.delete()
-          #  return Response("Error during the sending of mail", status=status.HTTP_409_CONFLICT)
-        return Response("Please valid your account", status=status.HTTP_201_CREATED)
+        # url = 'http://127.0.0.1:8000/TV/validate/' + uid + '/' + token
+        # # try:
+        # send_mail('Activate your account', 'Activate at : %s' % url, 'courstesttt@@gmail.com', [mail])
+        # except:
+        #   link_user.delete()
+        #  return Response("Error during the sending of mail", status=status.HTTP_409_CONFLICT)
+        # return Response("Please valid your account", status=status.HTTP_201_CREATED)
+        return Response("OK", status=status.HTTP_201_CREATED)
 
 
 def activate(request, uidb64, token):
@@ -57,3 +67,21 @@ def activate(request, uidb64, token):
         except:
             pass
     return http.HttpResponseRedirect('/user/logout/')
+
+
+def subscription_extension(request, device_id):
+    client = Client.objects.get(device_id=device_id)
+    if not client:
+        return Response("OK", status=status.HTTP_403_FORBIDDEN)
+    # Add check of payement
+    client.expiration_date = timezone.now() + datetime.timedelta(days=365)
+    client.save()
+    return Response("OK", status=status.HTTP_202_ACCEPTED)
+
+
+def get_subscription(request, device_id):
+    client = Client.objects.get(device_id=device_id)
+    if not client:
+        return Response("OK", status=status.HTTP_403_FORBIDDEN)
+    # Add check of payement
+    return Response(json.dump({'time': client.expiration_date}), status=status.HTTP_202_ACCEPTED)

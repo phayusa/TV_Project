@@ -25,7 +25,7 @@ SECRET_KEY = '=9h8kvd6)slv_d^8p2dc(1xd=ucg@b9bi1-a@*neuy9(fmv5i-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', u'192.168.0.100', u'10.53.8.144']
+ALLOWED_HOSTS = ['127.0.0.1', u'192.168.0.101', u'10.53.8.144']
 
 ADMINS = [("Michel", "sokomo873@free.fr"), ]
 
@@ -132,8 +132,14 @@ LOGIN_URL = '/user/login_view/'
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 465
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'courstesttt@gmail.com'
+EMAIL_HOST_PASSWORD = 'ELmdp345***23'
+EMAIL_PORT = 587
 
 
 # In Production

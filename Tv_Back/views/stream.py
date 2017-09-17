@@ -5,11 +5,12 @@ from rest_framework import generics
 from rest_framework.test import force_authenticate
 
 from Tv_Back.models import Channel, Movie, Serie
+from Tv_Back.permissions import ClientPermission
 from Tv_Back.serializers import ChannelSerializer, MovieSerializer, SerieSerializer
 
 
 class StreamBase(generics.GenericAPIView):
-    # permission_classes = (ClientPermission, )
+    permission_classes = (ClientPermission, )
 
     def dispatch(self, request, *args, **kwargs):
         force_authenticate(request)
