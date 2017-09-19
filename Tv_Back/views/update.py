@@ -22,7 +22,6 @@ def populate_db(request):
     episodes = 1
     for dir_name in os.listdir(folder):
         for file_name in os.listdir(folder + dir_name):
-            print file_name
             for line in io.open(folder + dir_name + "/" + file_name.replace("._",""), encoding="utf-8").readlines():
                 if line.startswith("﻿#"):
                     name_channel_raw = line.split(",")[1].strip()

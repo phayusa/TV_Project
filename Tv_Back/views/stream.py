@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from rest_framework import generics
 from rest_framework.test import force_authenticate
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from Tv_Back.models import Channel, Movie, Serie
 from Tv_Back.permissions import ClientPermission
@@ -10,7 +11,8 @@ from Tv_Back.serializers import ChannelSerializer, MovieSerializer, SerieSeriali
 
 
 class StreamBase(generics.GenericAPIView):
-    permission_classes = (ClientPermission, )
+    permission_classes = (ClientPermission,)
+    authentication_classes = (JSONWebTokenAuthentication,)
 
     def dispatch(self, request, *args, **kwargs):
         force_authenticate(request)
@@ -54,5 +56,3 @@ class SerieList(StreamBase, generics.ListAPIView):
         if category is not None:
             queryset = queryset.filter(category=category)
         return queryset
-
-

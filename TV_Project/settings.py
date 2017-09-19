@@ -25,7 +25,7 @@ SECRET_KEY = '=9h8kvd6)slv_d^8p2dc(1xd=ucg@b9bi1-a@*neuy9(fmv5i-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', u'192.168.0.101', u'10.53.8.144']
+ALLOWED_HOSTS = ['127.0.0.1', u'192.168.0.101', u'192.168.0.100', u'10.53.8.144']
 
 ADMINS = [("Michel", "sokomo873@free.fr"), ]
 
@@ -103,6 +103,19 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+}
 
 
 # Internationalization

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from rest_framework import generics
 from rest_framework.test import force_authenticate
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from Tv_Back.models import Season, Episode
 from Tv_Back.permissions import ClientPermission
@@ -12,8 +13,9 @@ from Tv_Back.serializers import SeasonSerializer, EpisodeSerializer
 class SerieBase(generics.GenericAPIView):
     serializer_class = SeasonSerializer
     queryset = Season.objects.all()
+    authentication_classes = (JSONWebTokenAuthentication,)
 
-    permission_classes = (ClientPermission, )
+    permission_classes = (ClientPermission,)
 
     def dispatch(self, request, *args, **kwargs):
         force_authenticate(request)

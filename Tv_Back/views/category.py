@@ -2,16 +2,19 @@
 from __future__ import unicode_literals
 
 from rest_framework import generics
+from rest_framework.test import force_authenticate
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from Tv_Back.serializers import CategorySerializer, CategoryChannelSerializer, CategoryMovieSerializer, CategorySerieeSerializer
 from Tv_Back.models import CategoryChannel, CategoryMovie, CategorySerie
 from Tv_Back.permissions import ClientPermission
-from rest_framework.test import force_authenticate
+from Tv_Back.serializers import CategorySerializer, CategoryChannelSerializer, CategoryMovieSerializer, \
+    CategorySerieeSerializer
 
 
 class CategoryBase(generics.GenericAPIView):
     serializer_class = CategorySerializer
-    permission_classes = (ClientPermission, )
+    permission_classes = (ClientPermission,)
+    authentication_classes = (JSONWebTokenAuthentication,)
 
     def dispatch(self, request, *args, **kwargs):
         force_authenticate(request)
@@ -40,4 +43,4 @@ class CategorySerieList(CategoryBase, generics.ListAPIView):
     serializer_class = CategorySerieeSerializer
 
 # class CategoryDetail(CategoryBase, generics.RetrieveUpdateDestroyAPIView):
-    # pass
+# pass

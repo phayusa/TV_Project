@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import json
 import urllib2
+import re
 
 from Tv_Back.models.serie import Serie
 from Tv_Back.models.stream import Movie
@@ -17,6 +18,12 @@ def update_info(request):
     return http.HttpResponseRedirect('/admin/')
 
 
+def clean_html(raw_html):
+    clean_r = re.compile('<.*?>')
+    clean_text = re.sub(clean_r, '', raw_html)
+    return clean_text
+
+
 def update_serie():
     base_url_api = "http://api.tvmaze.com/search/shows?q="
     for serie in Serie.objects.all():
@@ -26,7 +33,7 @@ def update_serie():
         json_received = urllib2.urlopen(url).read()
         object_movie = json.loads(json_received)[0]['show']
         serie.image_url = object_movie['image']['medium']
-        serie.summary = object_movie['summary']
+        serie.summary = clean_html(object_movie['summary'])
         for category in object_movie['genres']:
             find_category, _ = CategorySerie.objects.get_or_create(name=category)
             serie.category.add(find_category)
