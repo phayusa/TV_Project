@@ -25,7 +25,7 @@ SECRET_KEY = '=9h8kvd6)slv_d^8p2dc(1xd=ucg@b9bi1-a@*neuy9(fmv5i-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', u'192.168.0.101', u'192.168.0.100', u'10.53.8.144']
+ALLOWED_HOSTS = ['127.0.0.1', u'192.168.0.101', u'192.168.0.100', u'10.53.8.199']
 
 ADMINS = [("Michel", "sokomo873@free.fr"), ]
 
@@ -154,6 +154,8 @@ EMAIL_HOST_USER = 'courstesttt@gmail.com'
 EMAIL_HOST_PASSWORD = 'ELmdp345***23'
 EMAIL_PORT = 587
 
+
+VERSION_APP = 1.2
 
 # In Production
 # SECURE_SSL_REDIRECT = True

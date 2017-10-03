@@ -43,7 +43,6 @@ class ClientCreate(generics.CreateAPIView):
         # uid = urlsafe_base64_encode(force_bytes(link_user.pk))
 
         id = request.data.get('id', False)
-        print id
         if not id:
             return Response(status=status.HTTP_403_FORBIDDEN)
         hash_obj = hashlib.sha256(id)

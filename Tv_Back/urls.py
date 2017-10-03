@@ -11,7 +11,8 @@ from views.update import populate_db
 from views.update_infos import update_info
 from views.serie import EpisodeList
 from views.client import subscription_extension
-from django.views.decorators.csrf import csrf_exempt
+from views.payement import SendToken
+from views.apk import get_version, get_last_version
 
 urlpatterns = [
     url(r'^channels/$', ChannelList.as_view()),
@@ -30,6 +31,11 @@ urlpatterns = [
 
     url(r'create/$', ClientCreate.as_view()),
     url(r'login/$', LoginView.as_view()),
+
+    url(r'user/subscription', SendToken.as_view(), name="Reabo"),
+
+    url(r'apk/version', get_version, name="version"),
+    url(r'apk/file/last', get_last_version, name="apk"),
 
     url(r'update/all/', populate_db, name="update"),
     url(r'update/infos/', update_info, name="infos"),
