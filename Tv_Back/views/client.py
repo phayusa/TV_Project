@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_decode
@@ -19,9 +20,11 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_jwt.settings import api_settings
 
 from Tv_Back.models import Client
+from Tv_Back.permissions import ClientPermissionAccess
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -117,16 +120,31 @@ def activate(request, uidb64, token):
 def subscription_extension(request, device_id):
     client = Client.objects.get(device_id=device_id)
     if not client:
-        return Response("OK", status=status.HTTP_403_FORBIDDEN)
+        return Response(status=status.HTTP_403_FORBIDDEN)
     # Add check of payement
     client.expiration_date = timezone.now() + datetime.timedelta(days=365)
     client.save()
-    return Response("OK", status=status.HTTP_202_ACCEPTED)
+    return Response(status=status.HTTP_202_ACCEPTED)
 
 
-def get_subscription(request, device_id):
-    client = Client.objects.get(device_id=device_id)
-    if not client:
-        return Response("OK", status=status.HTTP_403_FORBIDDEN)
-    # Add check of payement
-    return Response(json.dump({'time': client.expiration_date}), status=status.HTTP_202_ACCEPTED)
+@method_decorator(csrf_exempt, name="dispatch")
+class ClientSubscripitionManager(generics.CreateAPIView):
+    permission_classes = (ClientPermissionAccess,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+
+    def get(self, request, **kwargs):
+        client = Client.objects.get(user=request.user)
+        if not client:
+            return HttpResponse(status=status.HTTP_403_FORBIDDEN)
+        # Add check of payement
+        return HttpResponse(json.dumps
+                            ({'time': str(client.expiration_date)}), status=status.HTTP_202_ACCEPTED)
+
+# def get_subscription(request):
+#     if request.user.is_anonymous():
+#         return HttpResponse(status=status.HTTP_403_FORBIDDEN)
+#     client = Client.objects.get(user=request.user)
+#     if not client:
+#         return HttpResponse(status=status.HTTP_403_FORBIDDEN)
+#     # Add check of payement
+#     return HttpResponse(json.dump({'time': client.expiration_date}), status=status.HTTP_202_ACCEPTED)

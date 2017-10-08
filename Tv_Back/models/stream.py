@@ -20,6 +20,7 @@ class Stream(models.Model):
 
 class Channel(Stream):
     category = models.ForeignKey(CategoryChannel, on_delete=models.CASCADE)
+    image_path = models.CharField(max_length=1000, blank=True, null=True)
 
 
 class Movie(Stream):

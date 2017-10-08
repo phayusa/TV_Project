@@ -6,14 +6,14 @@ from rest_framework.test import force_authenticate
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from Tv_Back.models import CategoryChannel, CategoryMovie, CategorySerie
-from Tv_Back.permissions import ClientPermission
+from Tv_Back.permissions import ClientPermissionStream
 from Tv_Back.serializers import CategorySerializer, CategoryChannelSerializer, CategoryMovieSerializer, \
     CategorySerieeSerializer
 
 
 class CategoryBase(generics.GenericAPIView):
     serializer_class = CategorySerializer
-    permission_classes = (ClientPermission,)
+    permission_classes = (ClientPermissionStream,)
     authentication_classes = (JSONWebTokenAuthentication,)
 
     def dispatch(self, request, *args, **kwargs):

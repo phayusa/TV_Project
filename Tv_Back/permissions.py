@@ -4,12 +4,14 @@ from rest_framework import permissions
 from models import Client
 
 
-class ClientPermission(permissions.BasePermission):
+class ClientPermissionStream(permissions.BasePermission):
     def has_permission(self, request, view):
         # device_id = request.resolver_match.kwargs.get('device_id')
         # device_id = request.data.get('device_id', False)
         if request.user.is_superuser:
             return True
+        if request.user.is_anonymous():
+            return False
         # if not ('Authorisation' in request.META.keys()):
         # return False
         # device_id = request.META['Authorisation']
@@ -22,7 +24,19 @@ class ClientPermission(permissions.BasePermission):
             return False
         else:
             return client.expiration_date > timezone.now()
-            #return False
-        # white_addr = user.ip_connected.split(',')
-        # return user.expiration_date > datetime.now() and request.META['REMOTE_ADDR'] in white_addr
-        # return user.expiration_date > datetime.now()
+            # return False
+            # white_addr = user.ip_connected.split(',')
+            # return user.expiration_date > datetime.now() and request.META['REMOTE_ADDR'] in white_addr
+            # return user.expiration_date > datetime.now()
+
+
+class ClientPermissionAccess(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_superuser:
+            return True
+        if request.user.is_anonymous():
+            return False
+        client = Client.objects.filter(user=request.user)[0]
+        if not client:
+            return False
+        return True

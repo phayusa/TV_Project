@@ -10,7 +10,7 @@ from views.tag import TagList
 from views.update import populate_db
 from views.update_infos import update_info
 from views.serie import EpisodeList
-from views.client import subscription_extension
+from views.client import subscription_extension, ClientSubscripitionManager
 from views.payement import SendToken
 from views.apk import get_version, get_last_version
 
@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'update/all/', populate_db, name="update"),
     url(r'update/infos/', update_info, name="infos"),
     url(r'update/user/(?P<device_id>[0-9A-Za-z_.\-]+)', subscription_extension, name="extension"),
-    url(r'user/time/(?P<device_id>[0-9A-Za-z_.\-]+)', subscription_extension, name="extension"),
+    url(r'user/time/', ClientSubscripitionManager.as_view(), name="time_left"),
     url(r'validate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', activate,
         name='user-activation-link'),
 ]

@@ -22,7 +22,7 @@ def populate_db(request):
     episodes = 1
     for dir_name in os.listdir(folder):
         for file_name in os.listdir(folder + dir_name):
-            for line in io.open(folder + dir_name + "/" + file_name.replace("._",""), encoding="utf-8").readlines():
+            for line in io.open(folder + dir_name + "/" + file_name.replace("._", ""), encoding="utf-8").readlines():
                 if line.startswith("﻿#"):
                     name_channel_raw = line.split(",")[1].strip()
                     tag_name = "None"
@@ -65,12 +65,13 @@ def populate_db(request):
                             else:
                                 season.episodes = episodes
                                 season.save()
-                            # category, _ = CategoryMovie.objects.get_or_create(
-                            # name=name_serie)
+                                # category, _ = CategoryMovie.objects.get_or_create(
+                                # name=name_serie)
                 else:
                     if type_data == "channels":
                         _, _ = Channel.objects.get_or_create(name=name_channel, url=line.strip().encode("utf-8"),
-                                                             category=category)
+                                                             category=category,
+                                                             image_path="/Users/msrouji/Downloads/noimage.png")
                     elif type_data == "movie":
                         _, _ = Movie.objects.get_or_create(name=name_channel, url=line.strip().encode("utf-8"),
                                                            category=category)
