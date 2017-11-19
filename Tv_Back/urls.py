@@ -13,6 +13,7 @@ from views.serie import EpisodeList
 from views.client import subscription_extension, ClientSubscripitionManager
 from views.payement import SendToken
 from views.apk import get_version, get_last_version
+from rest_framework_jwt.views import refresh_jwt_token
 
 urlpatterns = [
     url(r'^channels/$', ChannelList.as_view()),
@@ -33,6 +34,7 @@ urlpatterns = [
     url(r'login/$', LoginView.as_view()),
 
     url(r'user/subscription', SendToken.as_view(), name="Reabo"),
+    url(r'^user/token-refresh/', refresh_jwt_token),
 
     url(r'apk/version', get_version, name="version"),
     url(r'apk/file/last', get_last_version, name="apk"),

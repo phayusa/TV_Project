@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=9h8kvd6)slv_d^8p2dc(1xd=ucg@b9bi1-a@*neuy9(fmv5i-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', u'176.31.99.13', u'192.168.0.105', u'10.53.8.70']
+ALLOWED_HOSTS = ['127.0.0.1', u'176.31.99.139', u'192.168.0.100', u'172.16.14.213']
 
 ADMINS = [("Michel", "sokomo873@free.fr"), ]
 
@@ -155,7 +155,11 @@ EMAIL_HOST_PASSWORD = 'ELmdp345***23'
 EMAIL_PORT = 587
 
 
-VERSION_APP = 0.9
+VERSION_APP = 0.93
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+}
 
 # # In Production
 # SECURE_SSL_REDIRECT = True
